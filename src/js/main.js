@@ -30,6 +30,9 @@
     function getFormattedDate(date) {
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
     }
+    window.addEventListener("load", () => {
+        document.getElementById("app-loading-overlay")?.classList.add("hidden");
+    });
     // Routing & Sidebar
     function handleRoute() {
         let path = window.location.hash.slice(1) || "/home";
@@ -239,13 +242,15 @@
               All Recipes
             </button>`;
         for (let i = 0; i < areas.length; i++) {
-            container += `
+            if (i < 11) {
+                container += `
          <button
               class="area-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium text-sm whitespace-nowrap hover:bg-gray-200 hover:scale-110 transition-all duration-300 transform"
             >
               ${areas[i].name}
             </button>
       `;
+            }
         }
         document.querySelector("#search-filters-section .flex.items-center").innerHTML = container;
         let areaButtons = document.querySelectorAll(".area-btn");
@@ -1355,7 +1360,7 @@
         currentDate.setDate(currentDate.getDate() - i);
         let currentFormattedDate = getFormattedDate(currentDate);
         let dayName = currentDate.toLocaleDateString("en-US", {
-            weekday: "long",
+            weekday: "short",
         });
         let dayNum = currentDate.toLocaleDateString("en-US", {
             day: "2-digit",
@@ -1527,7 +1532,7 @@
                     <p class="text-lg font-bold text-emerald-600">${foodlogStorage[formattedDate].meals[i].nutrition.calories}</p>
                     <p class="text-xs text-gray-500">kcal</p>
                   </div>
-                  <div class=" md:flex gap-2 text-xs text-gray-500">
+                  <div class=" md:flex hidden gap-2 text-xs text-gray-500">
                     <span class="px-2 py-1 bg-blue-50 rounded">${foodlogStorage[formattedDate].meals[i].nutrition.protein}g P</span>
                     <span class="px-2 py-1 bg-amber-50 rounded">${foodlogStorage[formattedDate].meals[i].nutrition.carbs}g C</span>
                     <span class="px-2 py-1 bg-purple-50 rounded">${foodlogStorage[formattedDate].meals[i].nutrition.fat}g F</span>
